@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
@@ -12,7 +13,10 @@ public class BrowserFactory {
 	public static WebDriver startApplication(WebDriver driver, String browserName, String appURL) {
 		if (browserName.equalsIgnoreCase("Chrome")) {
 			System.setProperty("webdriver.chrome.driver","./Drivers/chromedriver.exe");
-			driver= new ChromeDriver();
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			driver = new ChromeDriver(options);
+			
 		}
 		else if(browserName.equalsIgnoreCase("Firefox")) {
 			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "\\Drivers\\geckodriver.exe");
@@ -20,6 +24,7 @@ public class BrowserFactory {
 			options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe"); 
 			driver = new FirefoxDriver(options);
 		}
+		
 		driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		driver.get(appURL);
